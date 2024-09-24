@@ -33,7 +33,8 @@ app.use(
 // app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/save", saveRouter);
-app.use("/images", express.static("C:/aaa/images"));
+// app.use("/images", express.static("C:/aaa/images"));
+app.use("/images", express.static("/home/ec2-user/selectedimg"));
 
 app.get("/", function (req, res) {
   res.send("test server on");
