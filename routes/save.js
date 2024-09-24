@@ -49,8 +49,8 @@ router.post("/", async (req, res) => {
 
   // 이미지 파일 경로 설정
   // const filePath = path.join(__dirname, outputFileName); //__dirname이게 현재실행되는파일의 경로를 지정해주시는 기본변수같은거
-  const saveDirectory = "/home/ec2-user/downloads";
-  // const saveDirectory = "C:/Users/Rainbow Brain/Downloads";
+  // const saveDirectory = "/home/ec2-user/downloads";
+  const saveDirectory = "C:/Users/Rainbow Brain/Downloads";
   const filePath = path.join(saveDirectory, outputFileName);
 
   // base64 데이터를 파일로 저장
@@ -68,8 +68,8 @@ router.post("/saveselecte", async (req, res) => {
   console.log("선택이미지저장시작");
   const { imageUrl } = req.body;
 
-  const saveDirectory = "/home/ec2-user/selectedimg";
-  // const saveDirectory = "C:/aaa/images";
+  // const saveDirectory = "/home/ec2-user/selectedimg";
+  const saveDirectory = "C:/aaa/images";
   const outputFileName = "selectedimage.png"; // 저장할 파일 이름
   const filePath = path.join(saveDirectory, outputFileName); // 경로 결합
 
