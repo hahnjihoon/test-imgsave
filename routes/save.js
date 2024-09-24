@@ -48,8 +48,8 @@ router.post("/", async (req, res) => {
   const base64Data = htmlContent.replace(/^data:image\/png;base64,/, "");
 
   // 이미지 파일 경로 설정
-  // const filePath = path.join(__dirname, outputFileName); //__dirname이게 현재실행되는파일의 경로를 지정해주시는 시발 기본변수같은거
-  const saveDirectory = "C:/Users/Rainbow Brain/Downloads/";
+  // const filePath = path.join(__dirname, outputFileName); //__dirname이게 현재실행되는파일의 경로를 지정해주시는 기본변수같은거
+  const saveDirectory = "/home/ec2-user/downloads";
   const filePath = path.join(saveDirectory, outputFileName);
 
   // base64 데이터를 파일로 저장
@@ -61,25 +61,13 @@ router.post("/", async (req, res) => {
     // res.send("File saved successfully");
     res.status(200).json({ message: "이미지 저장 성공" });
   });
-
-  // const outputPath = path.join(__dirname, "../public", outputFileName);
-
-  // try {
-  //   await captureHTMLToImage(htmlContent, outputPath);
-  //   res.sendFile(outputPath);
-  // } catch (error) {
-  //   console.error("오류 발생:", error);
-  //   res.status(500).send("이미지 캡처 실패");
-  // }
 });
 
 router.post("/saveselecte", async (req, res) => {
   console.log("선택이미지저장시작");
-  // const selectedUrl =
-  //   "https://oaidalleapiprodscus.blob.core.windows.net/private/org-AbwPMQz0pBtsD9LWmYjKBKF6/user-CjxSX5jA40rjmcrMhEue4lji/img-S293imzSZvGSiPoCkFTG73YX.png?st=2024-09-06T00%3A05%3A19Z&se=2024-09-06T02%3A05%3A19Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-09-05T22%3A08%3A57Z&ske=2024-09-06T22%3A08%3A57Z&sks=b&skv=2024-08-04&sig=AbNO%2BFrmzYvukGVP81v3RGsGT6qxg4ZyTazrinHAar4%3D";
   const { imageUrl } = req.body;
 
-  const saveDirectory = "C:/aaa/images";
+  const saveDirectory = "/home/ec2-user/selectedimg";
   const outputFileName = "selectedimage.png"; // 저장할 파일 이름
   const filePath = path.join(saveDirectory, outputFileName); // 경로 결합
 
@@ -96,12 +84,6 @@ router.post("/saveselecte", async (req, res) => {
 
     writer.on("finish", () => {
       console.log("이미지 저장 완료");
-
-      // 저장 경로와 파일명을 합쳐서 location 키로 리턴
-      //// const location = path.join(saveDirectory, outputFileName);
-      // const location = path.join(outputFileName);
-      // console.log("저장완료 위치반환 :: ", location);
-      // res.status(200).json({ message: "이미지 저장 성공", location });
 
       // base64로 리턴
       const imageBuffer = fs.readFileSync(filePath);
