@@ -28,7 +28,8 @@ app.use(
       "*",
       "http://localhost:3000/",
       "http://192.168.0.137:3000",
-      "http://43.201.46.209"
+      "http://43.201.46.209",
+      "http://192.168.0.161:3000"
     ],
     methods: "GET, POST, PUT, DELETE",
     credentials: true
