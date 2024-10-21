@@ -4,6 +4,7 @@ const path = require("path");
 const router = express.Router();
 const fs = require("fs");
 const axios = require("axios");
+require("dotenv").config();
 
 async function captureHTMLToImage(htmlContent, outputPath) {
   const browser = await puppeteer.launch();
@@ -100,6 +101,82 @@ router.post("/saveselecte", async (req, res) => {
   } catch (error) {
     console.error("이미지 다운로드 중 오류 발생:", error);
     res.status(500).send("이미지 다운로드 실패");
+  }
+});
+
+router.post("/translate", async (req, res) => {
+  try {
+    console.log("한국어->영어 변환 시작");
+    const prom = req.body.prom; // 클라이언트로부터 받은 한글 텍스트
+    const apikey = process.env.API_KEY;
+
+    console.log("프롬프트 :: ", prom);
+    console.log("키", apikey);
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: apikey // API 키 사용
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "Translate the following Korean text to English."
+          },
+          {
+            role: "user",
+            content: prom // 한글 프롬프트 전달
+          }
+        ],
+        max_tokens: 60,
+        temperature: 0.3
+      })
+    });
+
+    const result = await response.json();
+    console.log("결과:: ", result);
+    res.json(result);
+  } catch (error) {
+    console.error("API 호출 실패:", error);
+    res.status(500).json({ error: "번역 중 오류가 발생했습니다." });
+  }
+});
+
+router.post("/generate", async (req, res) => {
+  try {
+    console.log("이미지생성 3장 시작");
+    const prom = req.body.prompt; // 클라이언트로부터 받은 한글 텍스트
+    const apikey = process.env.API_KEY;
+
+    console.log("프롬프트 :: ", prom);
+    console.log("키", apikey);
+
+    const response = await fetch(
+      "https://api.openai.com/v1/images/generations",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: apikey
+          Authorization: apikey
+        },
+        body: JSON.stringify({
+          prompt: prom,
+          n: 3,
+          size: "256x256"
+        })
+      }
+    );
+
+    const result = await response.json();
+    console.log("결과:: ", result);
+    res.json(result);
+  } catch (error) {
+    console.error("API 호출 실패:", error);
+    res.status(500).json({ error: "번역 중 오류가 발생했습니다." });
   }
 });
 

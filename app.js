@@ -29,7 +29,8 @@ app.use(
       "http://localhost:3000/",
       "http://192.168.0.137:3000",
       "http://43.201.46.209",
-      "http://192.168.0.161:3000"
+      "http://192.168.0.161:3000",
+      "http://192.168.0.122:3000"
     ],
     methods: "GET, POST, PUT, DELETE",
     credentials: true
@@ -43,11 +44,23 @@ app.use("/save", saveRouter);
 // app.use("/images", express.static("/home/ec2-user/selectedimg"));
 
 app.get("/", function (req, res) {
-  res.send("test server on");
+  res.send("banner server on");
 });
 
-app.listen(8081, () => {
-  console.log("Server is listening...");
+const port = 8081;
+app.listen(port, () => {
+  const host = "localhost";
+  const networkHost = require("os").networkInterfaces();
+  const ipAddresses = Object.values(networkHost)
+    .flat()
+    .filter((iface) => iface.family === "IPv4" && !iface.internal)
+    .map((iface) => iface.address);
+
+  console.log(`You can now view your API in the browser.`);
+  console.log(`Local: http://${host}:${port}`);
+  ipAddresses.forEach((ip) => {
+    console.log(`On Your Network: http://${ip}:${port}`);
+  });
 });
 
 // // catch 404 and forward to error handler
